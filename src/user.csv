@@ -1,0 +1,3 @@
+id;username;nama;password;role;saldo
+1;admin;Admin;12345;Admin;0
+2;user;User;12345;User;0
