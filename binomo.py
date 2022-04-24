@@ -1,10 +1,6 @@
 # Python library imports
 import os
-import sys
-import math
-import time
 import argparse
-import datetime
 
 # Module imports
 import reusables
@@ -41,7 +37,6 @@ if not initLists[0][0]: # Initialization error
     print("Exiting....")
     exit() # Terminate program
 user_list, game_list, trx_hist, own_list = initLists[1][0], initLists[1][1], initLists[1][2], initLists[1][3] # Set all data variables
-
 
 # Main menu
 while True:

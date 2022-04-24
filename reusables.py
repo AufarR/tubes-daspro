@@ -2,11 +2,6 @@
 
 # Python library imports
 import os
-import sys
-import math
-import time
-import argparse
-import datetime
 
 # Check if an item is in list
 # Requires a list and item to be searched
