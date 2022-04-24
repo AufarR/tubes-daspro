@@ -498,13 +498,13 @@ def kerangAjaib():
     # This function is based on the following equation:
     # n = (a*x + c) % m
     # n is the result, a and c is an integer constant, x is an integer variable based on current unix timestamp
-    # m is an integer value based on how many kinds of answers can be generated, subtracted by 1 (example: 3 answers -> m= 3 - 1=2)
+    # m is an integer value based on how many kinds of answers can be generated (example: 3 answers -> m=3)
     input("Apa pertanyaanmu? ")
     # Constant declaration
     answers = ("Ya","Tidak","Mungkin")
     multiplier = 8
     adder = 7
-    answerNum = reusables.lenArr(answers) - 1 # There are 3 answers, so its value will be 3-1 = 2
+    answerNum = reusables.arrLen(answers) # There are 3 answers
     # Get variable value
     timeStamp = int(time.time())
     # Get generated number
@@ -518,7 +518,7 @@ def kerangAjaib():
 # Returns game result message
 def ticTacToe():
     board = [['#','#','#'],['#','#','#'],['#','#','#']] # Game board init
-    print("Legenda:\n# Kosong\n X Pemain 1\nO Pemain 2")
+    print("Legenda:\n# Kosong\nX Pemain 1\nO Pemain 2")
     finished = False # Var to check if game is finished
     p1turn = True # Var to check which player moves in the current round
     while not finished:
@@ -557,13 +557,13 @@ def ticTacToe():
         # Player round
         while not finished:
             if p1turn:
-                print('\n Giliran pemain 1 "X"')
+                print('\nGiliran pemain 1 "X"')
             else:
-                print('\n Giliran pemain 2 "O"')
+                print('\nGiliran pemain 2 "O"')
             col = int(input("Kolom [1-3]: ")) - 1
             row = int(input("Baris [1-3]: ")) - 1
             # Check if input is out of range
-            if (col<0 and col>2) or (row<0 and row>2):
+            if col<0 or col>2 or row<0 or row>2:
                 print("Masukan tidak valid")
                 continue
             # Check if square has already been filled
