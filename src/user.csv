@@ -1,3 +1,3 @@
 id;username;nama;password;role;saldo
-1;admin;Admin;12345;Admin;0
-2;user;User;12345;User;0
+1;admin;Admin;0xf210xf700xfbf0x100e0x105d;Admin;0
+2;user;User;0xf210xf700xfbf0x100e0x105d;User;99000

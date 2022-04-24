@@ -1,5 +1,4 @@
 # Python library imports
-from asyncio import trsock
 import os
 import sys
 import math
@@ -77,6 +76,10 @@ while True:
         mainproc.riwayat(trx_hist,current_user_id)
     elif menuInput == "help":
         mainproc.bantuan(roleCheck[1])
+    elif menuInput == "kerangajaib":
+        print(mainproc.kerangAjaib())
+    elif menuInput == "tictactoe":
+        print(mainproc.ticTacToe())
     elif menuInput == "save":
         mainproc.save((user_list,game_list,trx_hist,own_list),cwd)
     elif menuInput == "exit":
@@ -85,4 +88,4 @@ while True:
         break # ends main menu
     else:
         continue # return to main menu until user chooses to exit
-    print("Sampai jumpa!")
+print("Sampai jumpa!") # Exit message

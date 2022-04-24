@@ -2,7 +2,6 @@
 
 # Python library imports
 import os
-import ssl
 import sys
 import math
 import time
@@ -157,3 +156,53 @@ def arrFilter(arr,filters):
         if match:
             result += [get_idx(arr,item[0],0)]
     return result
+
+# String encrypting function
+# Requires string input
+# Returns encrypted string
+def encrypt(rawPass):
+    result = "" #Initialization
+    # Declarations
+    multiplier = 79
+    adder = 2
+    # Get all encrypted characters
+    for char in rawPass:
+        encryptedChar = (multiplier * ord(char) + adder)
+        result += hex(encryptedChar)
+    # Output encrypted string
+    return result
+
+# Encrypted string decrypting function
+# Requires an encrypted string to be decrypted (must be encrypted using encrypt(rawPass) function within this module)
+# Returns decrypted string
+def decrypt(encPass):
+    result = "" # Init
+    # Declarations
+    multiplier = 79
+    adder = 2
+    # Set variable for escaping "0x"
+    found0 = False
+    # Temp var init
+    tempString = ""
+    i = 0
+    for char in encPass:
+        # Skip first two passes
+        if i < 2:
+            i += 1
+            continue
+        # Split string by "0x"'s
+        if found0:
+            found0 = False
+            if char == "x":
+                result += chr(int((int(tempString,16) - adder) / multiplier)) # Append decrypted character to output
+                tempString = ""
+                continue
+            else:
+                tempString += "0"
+        if char == "0":
+            found0 = True
+            continue
+        else:
+            tempString += char
+    result += chr(int((int(tempString,16) - adder) / multiplier)) # Final appendage
+    return result # Result output

@@ -44,7 +44,7 @@ def load(baseDir, dataDir):
 # Returns False and error message if unauthorized
 def role_check(menu, user_id, userList):
   # Menu list, grouped based on auth level
-  menuList = (("register","tambah_game","ubah_game","ubah_stok","topup"),("buy_game","list_game","search_my_game","riwayat"),("list_game_toko","search_game_at_store","help","save"))
+  menuList = (("register","tambah_game","ubah_game","ubah_stok","topup"),("buy_game","list_game","search_my_game","riwayat"),("list_game_toko","search_game_at_store","help","save","tictactoe","kerangajaib"))
   errMsg = ("Maaf, anda tidak memiliki izin untuk menjalankan perintah berikut. Mintalah ke administrator untuk melakukan hal tersebut.","Maaf, anda harus menjadi user untuk melakukan hal tersebut.") # Error msg list
   if menu == "login" or menu == "exit": # Login and exit is always authorized
     return (True,"")
@@ -101,7 +101,7 @@ def register(userList):
         print("Kata sandi tidak boleh kosong")
         return userList
     uid = reusables.generateID(userList,0) # generate user ID
-    return userList + [[str(uid),uname,name,password,"User",0]]
+    return userList + [[str(uid),uname,name,reusables.encrypt(password),"User","0"]]
 
 # Login procedure
 # Uses current user list
@@ -111,7 +111,7 @@ def login(currentId, userList):
     uname = input("Masukkan nama pengguna: ")
     password = input("Masukkan kata sandi: ")
     for user in userList: # Credential check
-        if uname == user[1] and password == user[3]:
+        if uname == user[1] and reusables.encrypt(password) == user[3]:
             return user[0] # If credentials match, return user id
     # Credentials mismatched, return input user id & print error message
     print("Nama pengguna atau kata sandi salah.")
@@ -489,3 +489,99 @@ def riwayat(trx_hist,userId):
     else:
         print(trx_list)
     return True
+
+# Magic conch shell/kerang ajaib
+# Access level: logged-in
+# No parameters required
+# Returns one of the following strings pseudo-randomly: "Ya","Tidak","Mungkin"
+def kerangAjaib():
+    # This function is based on the following equation:
+    # n = (a*x + c) % m
+    # n is the result, a and c is an integer constant, x is an integer variable based on current unix timestamp
+    # m is an integer value based on how many kinds of answers can be generated, subtracted by 1 (example: 3 answers -> m= 3 - 1=2)
+    input("Apa pertanyaanmu? ")
+    # Constant declaration
+    answers = ("Ya","Tidak","Mungkin")
+    multiplier = 8
+    adder = 7
+    answerNum = reusables.lenArr(answers) - 1 # There are 3 answers, so its value will be 3-1 = 2
+    # Get variable value
+    timeStamp = int(time.time())
+    # Get generated number
+    answer = ( multiplier * timeStamp + adder ) % answerNum
+    # Output
+    return answers[answer]
+
+# Tic tac toe
+# Access level: logged-in
+# No parameters required
+# Returns game result message
+def ticTacToe():
+    board = [['#','#','#'],['#','#','#'],['#','#','#']] # Game board init
+    print("Legenda:\n# Kosong\n X Pemain 1\nO Pemain 2")
+    finished = False # Var to check if game is finished
+    p1turn = True # Var to check which player moves in the current round
+    while not finished:
+        print("\nStatus Papan")
+        for row in board: # Board print
+            rowString = ""
+            for col in row:
+                rowString += col
+            print(rowString)
+        # Check if winner is already determined (or if there's no winner)
+        # Row check
+        for row in board:
+            rowString = ""
+            for col in row:
+                rowString += col
+            if rowString == "XXX" or rowString == "OOO":
+                finished = True
+                winningString = rowString
+        # Column check
+        for col in range(3):
+            colString = ""
+            for row in board:
+                colString += row[col]
+            if colString == "XXX" or colString == "OOO":
+                finished = True
+                winningString = colString
+        # Stalemate check
+        boardFilled = True
+        for row in board:
+            for col in row:
+                if col == '#':
+                    boardFilled = False
+        if boardFilled:
+            finished = True
+            winningString = ""
+        # Player round
+        while not finished:
+            if p1turn:
+                print('\n Giliran pemain 1 "X"')
+            else:
+                print('\n Giliran pemain 2 "O"')
+            col = int(input("Kolom [1-3]: ")) - 1
+            row = int(input("Baris [1-3]: ")) - 1
+            # Check if input is out of range
+            if (col<0 and col>2) or (row<0 and row>2):
+                print("Masukan tidak valid")
+                continue
+            # Check if square has already been filled
+            if board[row][col] != '#':
+                print("Kotak sudah terisi")
+                continue
+            # Input validated, update board & change turn
+            if p1turn:
+                board[row][col] = 'X'
+                p1turn = False
+            else:
+                board[row][col] = 'O'
+                p1turn = True
+            break
+        if finished:
+            if winningString == "XXX":
+                return 'Pemain 1 "X" menang'
+            elif winningString == "OOO":
+                return 'Pemain 2 "O" menang'
+            else: ## winningString == "" -> draw
+                return "Tidak ada yang menang"
