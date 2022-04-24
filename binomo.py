@@ -42,10 +42,14 @@ if not initLists[0][0]: # Initialization error
     exit() # Terminate program
 user_list, game_list, trx_hist, own_list = initLists[1][0], initLists[1][1], initLists[1][2], initLists[1][3] # Set all data variables
 
+
 # Main menu
 while True:
-    print("\nSelamat datang di antarmuka Binomo!")
-    menuInput = input("Menu (ketik help untuk bantuan): ").lower() # Menu input
+    if current_user_id != "-1":
+        print("\nSelamat datang di antarmuka Binomo, "+user_list[reusables.get_idx(user_list,current_user_id,0)][2]+"!")
+    else:
+        print("\nSelamat datang di antarmuka Binomo!")
+    menuInput = input("Menu (ketik help untuk bantuan) \n>>> ").lower() # Menu input
     roleCheck = mainproc.role_check(menuInput, current_user_id, user_list)
     if not roleCheck[0]: # Auth check
         print(roleCheck[1]) # Send error message on auth error

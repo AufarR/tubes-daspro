@@ -453,9 +453,13 @@ def tambah_game(game_list):
         new[4] = input("Masukkan stok awal: ")
         # validation
         for item in new: # check for blanks
+            noBlank = True
             if item == "":
                 print("Mohon masukkan semua informasi mengenai game agar dapat disimpan BNMO.")
-                continue
+                noBlank = False
+                break
+        if not noBlank:
+            continue
         # Price & stock must be non-negative
         if int(new[3]) < 0:
             print("Harga game tidak boleh negatif.")
@@ -466,6 +470,7 @@ def tambah_game(game_list):
         break
     # Game list insert
     game_list += [[str(reusables.generateID(game_list,0)),new[0],new[1],new[2],str(new[3]),str(new[4])]]
+    print("Selamat! Berhasil menambahkan game "+new[0])
     # Output
     return game_list
 
