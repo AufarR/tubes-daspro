@@ -66,7 +66,7 @@ def role_check(menu, user_id, userList):
         found = True
         auth = i
   # Error if menu input is invalid
-  if 'auth' == 9:
+  if auth == 9:
     return (False,"Masukan tidak valid. Ketik 'help' untuk mendapatkan bantuan")
   # Menu input found, return values based on auth check  
   if (auth==2) or (auth==1 and role=="User") or (auth==0 and role=="Admin"):
